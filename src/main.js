@@ -29,11 +29,10 @@ var youtubeFavorites = ( function ($, my) {
 	} 
 	else {		// happy path: youtube api key was where it should be
 
-		// my.storage.init();				// Check for saved favorites & view history
-		// my.youtubeAPI.init();			// Do a default search
-		// my.searchBox.init();			// Bind click from nav bar to search box, ...
-		// my.vidPlayer.init( true );		// Sets the height of the main player based on screen width, show height slider
-		// my.searchResults.init();
+		// my.uiFramework.init(); 		not needed since it autoexecutes
+		// my.accordion.init();			is kicked off by uiFramework
+
+		my.searchBox.init();
 		
 		// if ( my.storage.empty() ){		// if no saved favorites or view history
 
