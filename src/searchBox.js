@@ -6,9 +6,13 @@ var youtubeFavorites = ( function ($, my) {
 			$searchPhrase = $( '#searchPhrase' ),
 			$locationRadius,
 			$currentLocationResults,
+			$otherLocation,
 
 			searchFilter = 'none',						// default is not to search by location
 			searchRadius = '10',						// default search radius
+
+			firstClickOnCurrentLocation = true,			// 
+			firstclickOnOtherLocation = true,
 
 
 		showOrHideElement = function( elt, show ) {
@@ -19,6 +23,23 @@ var youtubeFavorites = ( function ($, my) {
 			}
 		},
 
+		handleNoFilterClick = function() {
+
+		},
+
+		handleHereClick = function() {
+			my.geolocation.getLocation( function( longit, latit ) {
+				$currentLocationResults.find('input').val( latit + ', ' + longit );
+			});
+
+			firstClickOnCurrentLocation = false;
+		},
+
+		handleOtherPlaceClick = function() {
+
+		},
+
+
 		bindEvents = function() {
 			// Get radio button choice for search by location filter, 
 			// show radius input based on that selection,
@@ -28,17 +49,29 @@ var youtubeFavorites = ( function ($, my) {
 				searchFilter = $(this).val();
 
 				showOrHideElement( $currentLocationResults, searchFilter === 'here' ? true : false );
-				showOrHideElement( $locationRadius, searchFilter !== 'none' ? true : false );
+				showOrHideElement( $locationRadius, searchFilter !== 'none' ? true : false );				
+				showOrHideElement( $otherLocation, searchFilter === 'place' ? true : false );
+
+
+				if ( searchFilter === 'none' ) 			{ handleNoFilterClick(); }
+				else if ( searchFilter === 'here' ) 	{ handleHereClick(); }
+				else if ( searchFilter === 'place' ) 	{ handleOtherPlaceClick(); }
 			});
 		},
 
 		init = function() {
+			// Current location - it will display results of geolocation
 			$currentLocationResults = $searchPanel.find( '#currentLocationResults' );
-			$currentLocationResults.removeClass( 'hidden' ).hide();
-			
-			$locationRadius = $searchPanel.find( '#locationRadius' );			// cache access to element
+			$currentLocationResults.removeClass( 'hidden' ).hide();		// remove 'hidden' class so we can show()/hide()
+
+			// Location radius - input will ask for radius from chosen location to filter search by
+			$locationRadius = $searchPanel.find( '#locationRadius' );			
 			$locationRadius.removeClass( 'hidden' ).hide();
-			$locationRadius.val( searchRadius );
+			$locationRadius.val( searchRadius );						// inject the default
+
+			// Choosing another location based on latitude/longitude
+			$otherLocation = $searchPanel.find( '#otherLocation' );
+			$otherLocation.removeClass( 'hidden' ).hide();
 
 			bindEvents();
 

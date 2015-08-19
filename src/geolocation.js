@@ -12,8 +12,9 @@ var youtubeFavorites = ( function ($, my) {
 		getMap = function() {
 			var latlon = latitude + "," + longitude;
 
-			map_img_url = "http://maps.googleapis.com/maps/api/staticmap?center=
-			    "+latlon+"&zoom=14&size=250x250&sensor=false";
+			map_img_url = "http://maps.googleapis.com/maps/api/staticmap?center=" 
+				+ latlon 
+				+ "&zoom=14&size=250x250&sensor=false";
 
 			gotMap = true;
 		},
