@@ -3,11 +3,10 @@ var youtubeFavorites = ( function ($, my) {
 	my.debug_log = 1;					// Set to 0 for no output, 1 for yes, 2 for verbose
 
 	my.constants = {
-		colorLight : '#ede9ce',
-		colorMustard : '#c7ad88',
-		colorDkGrey: '#c7ad88',
-		colorRust: '#935347'
-
+		colorLight : '#ede9ce',			// main background yellowish white
+		colorMustard : '#c7ad88',		// search
+		colorDkGrey: '#64706c',			// search results
+		colorRust: '#935347'			// favorites
 
 	};
 

@@ -21,6 +21,15 @@ var youtubeFavorites = ( function ($, my) {
 			}
 		},
 
+		openPanel = function( panelIndex ) {
+			if ( panelStatus[ panelIndex] ) {	// if its open, we dont need to do anything
+				return;
+			} 
+			else {
+				togglePanel( panelIndex );
+			}
+		},
+
 
 		bindEvents = function() {
 			$accordion.find( '.accordion-title' ).on( 'click', function() {
@@ -51,6 +60,7 @@ var youtubeFavorites = ( function ($, my) {
 
 		return {
 			init : init,
+			openPanel : openPanel,
 			togglePanel : togglePanel
 		};
 	}();

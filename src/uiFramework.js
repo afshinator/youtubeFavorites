@@ -3,9 +3,10 @@ var youtubeFavorites = ( function ($, my) {
 	// Materializer CSS framework stuff and top level ui elements like nav buttons
 	my.uiFramework = function() {
 		
-		var 
+		var $navMenuItem = $( 'nav .pure-menu-item' ),
 
-		initNav = function() {
+		// Setup nav bar so that it can collapse to vertical
+		initNavMenu = function() {
 			var menu = document.getElementById('menu'),
 			    WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange':'resize';
 
@@ -44,13 +45,60 @@ var youtubeFavorites = ( function ($, my) {
 			window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
 		},
 
+		initNavButtons = function() {
+			// $navMenuItem.on( 'mouseover', function(e) {
+			// 	var targetText= $( e.target )[0].innerText;
 
-		// init() - 
+			// 	if ( targetText  === 'Search' ) {
+			// 		$(this).css( 'border-bottom', '2px solid ' + my.constants.colorMustard );
+			// 	} 
+			// 	else if ( targetText === 'Search Results' ) {
+			// 		$(this).css( 'border-bottom', '2px solid ' + my.constants.colorDkGrey );
+			// 	}
+			// 	else if ( targetText === 'Favorites') {
+			// 		$(this).css( 'border-bottom', '2px solid ' + my.constants.colorRust );
+			// 	}
+			// });
+			
+			// Put a function on JQuery that will scroll to a given element
+			$.fn.goTo = function() {
+				$('html, body').animate({
+					scrollTop: $(this).offset().top + 'px'
+				}, 'fast');
+
+				return this;
+			};
+
+			// Scroll to DOM element based on which nav menu item was clicked,
+			// tell that accordion to open
+			$navMenuItem.on( 'click', function(e) {
+				var targetText = $( e.target )[0].innerText,
+					panelIndex = null;  
+
+				if ( targetText === 'Search' ) { panelIndex = 0; }		// Index of 'Search'
+
+// TODO: deal with click on 'Player On/Off'
+
+				// Compensate for 'Search Results' because it has two words; assumes DOM element id is 'ResultsTitle'
+				if ( targetText.split( ' ' ).length > 1 ) {
+					targetText = targetText.split( ' ' )[1];
+					panelIndex = 1;										// Index of 'Search Results'
+				}
+
+				// Scroll to that accordion element
+				$( '#' + targetText + 'Title' ).goTo();
+
+				// Tell accordion to open appropriate panel
+				if ( panelIndex === null ) { panelIndex = 2; }   		// Index of 'Favorites'
+				my.accordion.openPanel( panelIndex );
+			});
+
+		},
+
 		init = function() {
-
-			// Initialize navigation
-			initNav();
-			my.accordion.init();
+			initNavMenu();				// Initialize navigation menu
+			my.accordion.init();		// Initialize accordion
+			initNavButtons();			// Initialize navigation buttons			
 
 			if ( my.debug_log ) { console.log( 'uiFramework initialized.' ); }
 		}();		
