@@ -217,7 +217,28 @@
 
 	<div id="accordion">
 	    <a id="SearchTitle" href="#panel1" class="accordion-title" >Search</a>
-	    <div id="panel1" class="accordion-panel">Conrtents in the search panel on e</div>
+	    <div id="panel1" class="accordion-panel">
+			<form class="pure-form">
+			    <input type="text" class="pure-input-2-3 pure-input-rounded" >
+			    <button type="submit" class="pure-button">Search</button>
+			    <br>
+			    <label for="option-one" class="pure-radio">
+			        <input id="option-one" type="radio" name="optionsRadios" value="option1" checked>
+			        Do not filter by location
+			    </label>
+
+			    <label for="option-two" class="pure-radio">
+			        <input id="option-two" type="radio" name="optionsRadios" value="option2" >
+			        Filter by current location
+			    </label>
+			    
+			    <label for="option-three" class="pure-radio">
+			        <input id="option-three" type="radio" name="optionsRadios" value="option3">
+			        Filter by another location
+			    </label>
+				<br>		    
+			</form>	    	
+	    </div>
 	    <a id="ResultsTitle" href="#panel2" class="accordion-title">Search Results</a>
 	    <div id="panel2" class="accordion-panel"> three </div>
 	    <a id="FavoritesTitle" href="#panel3" class="accordion-title">Favorites</a>

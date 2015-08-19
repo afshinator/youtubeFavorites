@@ -31,7 +31,6 @@ var youtubeFavorites = ( function ($, my) {
 
 		// my.storage.init();				// Check for saved favorites & view history
 		// my.youtubeAPI.init();			// Do a default search
-		// my.uiFramework.init();			// Materialize CSS framework js initialization for drop-downs, etc...
 		// my.searchBox.init();			// Bind click from nav bar to search box, ...
 		// my.vidPlayer.init( true );		// Sets the height of the main player based on screen width, show height slider
 		// my.searchResults.init();
