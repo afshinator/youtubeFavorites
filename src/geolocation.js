@@ -37,6 +37,7 @@ var youtubeFavorites = ( function ($, my) {
 
 			if ( my.debug_log ) { console.error( 'geolocation:' + errResult ); }
 
+			my.searchBox.handleGeolocationError( errResult );
 		    return errResult;
 		},
 

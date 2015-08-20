@@ -35,6 +35,11 @@
 	hr {
 		color: #565d64;
 	}
+
+	#currentLocationResults input {
+		width: 80%;
+		margin-left: 4%;
+	}
 </style>
 
 </head>
@@ -71,11 +76,7 @@
 	    <div id="panel1" class="accordion-panel">
 			<form class="pure-form">
 				
-			    <input id="searchPhrase" type="text" class="pure-input-2-3 pure-input-rounded" >
-			    <button type="submit" class="pure-button button-search">
-			    	<i class="fa fa-search"></i>
-			    	Search
-			    </button>
+
 
 				<div class="pure-g">
 				    <div class="pure-u-1 pure-u-md-1-3"> 
@@ -89,7 +90,7 @@
 					        Filter by current location
 					    </label>
 					    <div id="currentLocationResults" class="hidden">
-    						--><input type="text" placeholder="Getting current location..." readonly>
+    						<input type="text" placeholder="Getting current location..." readonly>
 					    </div>
 
 					    <label for="filter-place" class="pure-radio">
@@ -97,25 +98,20 @@
 					        Filter by another location
 					    </label>
 					    <div id="otherLocation" class="hidden">
-							<form class="pure-form pure-form-aligned">
-							    <fieldset>
-							        <div class="pure-control-group">
-							            <label for="latitude">Latitude</label>
-							            <input id="latitude" type="text" placeholder="Latitude">
-							        </div>
+					        <div class="pure-control-group">
+					            <label for="latitude">Latitude</label>
+					            <input id="latitude" type="text" placeholder="Latitude">
+					        </div>
 
-							        <div class="pure-control-group">
-							            <label for="longitude">Longitude</label>
-							            <input id="longitude" type="text" placeholder="Longitude">
-							        </div>
-							    </fieldset>
-							</form>
+					        <div class="pure-control-group">
+					            <label for="longitude">Longitude</label>
+					            <input id="longitude" type="text" placeholder="Longitude">
+					        </div>
 					    </div>
 				    </div>
 
 				    <div class="pure-u-1 pure-u-md-1-3"> 
 				    	<div id="locationRadius" class="hidden">
-				    		<br>
 				    		Location filter radius
     						<input type="text" placeholder="Please enter radius">
 					    </div>
@@ -124,6 +120,12 @@
 				    <div class="pure-u-1 pure-u-md-1-3"><i class="fa fa-map"></i>
 				    </div>
 				</div>
+
+			    <input id="searchPhrase" type="text" class="pure-input-2-3 pure-input-rounded" >
+			    <button type="submit" class="pure-button button-search">
+			    	<i class="fa fa-search"></i>
+			    	Search
+			    </button>
 
 			</form>	    	
 	    </div>
