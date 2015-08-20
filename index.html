@@ -74,6 +74,21 @@
 	}
 
 
+	#statusAlertBox {
+		position: fixed;
+		top: 7px;
+		right: 17px;
+		width: 150px;
+		height: 75px;
+		opacity: .8;
+		background: red;
+		border-radius: 4px;
+	}
+
+	#statusAlertBox span {
+		font-size: 2em;
+	}
+
 </style>
 
 </head>
@@ -212,6 +227,10 @@
 		</div>
 	</footer>
 
+
+	<div id="statusAlertBox" >
+		<span class="oi" aria-hidden="true" data-glyph="magnifying-glass"></span>
+	</div>
 
     <!-- app code -->
     <script src="src/apiKeys.js"></script>

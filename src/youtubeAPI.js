@@ -42,7 +42,7 @@ var youtubeFavorites = ( function ($, my) {
 				searchSuccessHandler( rawSearchResults );	// Execute function that was passed in			
 			})
 			.fail(function() {
-				console.log( "error searching for term: " + searchTerm );
+				console.log( "error searching for term: " + apiParams.q );
 			});			
 		},
 

@@ -39,6 +39,8 @@ var youtubeFavorites = ( function ($, my) {
 
 				whichPanel = hrefOfClickedTitle[ hrefOfClickedTitle.length - 1 ];
 				togglePanel( whichPanel - 1 );
+
+				return false;		// prevents url being replaced by anchor in address bar
 			});
 		},
 
