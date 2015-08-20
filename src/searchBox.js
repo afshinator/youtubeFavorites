@@ -36,7 +36,12 @@ var youtubeFavorites = ( function ($, my) {
 			// when browser responds with success.
 			// On error condition, geolocation module calls this modules handleGeolocationError()
 			my.geolocation.getLocation( function( longit, latit ) {
+				latitude = latit;
+				longitude = longit;
 				$currentLocationResults.find('input').val( latit + ', ' + longit );
+				if ( my.debug_log ) {
+					console.log( 'Got callback from geoloc. :' + 'lat:' + latitude + ', long:' + longitude );
+				}				
 			});
 
 			firstClickOnCurrentLocation = false;
@@ -73,8 +78,11 @@ var youtubeFavorites = ( function ($, my) {
 				// for Current location, geolocation call should've already put long/lat in this modules variables
 				if ( searchFilter !== 'none' ) {
 					searchRadius = $locationRadius.find( 'input' ).val();
-					latitude = $otherLocation.find( '#latitude' ).val();
-					longitude = $otherLocation.find( '#longitude' ).val();
+
+					if ( searchFilter === 'place' ) {
+						latitude = $otherLocation.find( '#latitude' ).val();
+						longitude = $otherLocation.find( '#longitude' ).val();
+					} // else these values already set by geolocation
 					if ( my.debug_log ) {
 						console.log( 'searchRadius:' + searchRadius + ', lat:' + latitude + ', long:' + longitude );
 					}
