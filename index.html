@@ -17,14 +17,13 @@
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 <!--<![endif]-->
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-	<!-- <link rel="stylesheet" href="lib/font-awesome.min.css" /> -->
 
+	<link rel="stylesheet" href="lib/open-iconic.css" />
 
     <link rel="stylesheet" href="src/styles.css" />
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="lib/jquery-2.1.1.min.js"></script>
     <!-- <script src="lib/jquery/2.1.1/jquery.js"></script> -->
 
 <style>
@@ -42,7 +41,7 @@
 	}
 
 	footer { 
-		background: #565d64;
+	/*	background: #515675;  */
 		height: 100px;
 	}
 
@@ -67,6 +66,14 @@
 		background-color: #935347;
 	}
 
+	#orderOptions {
+		padding: 4px;
+		border: 1px dotted #CAC49C; 
+		border-radius: 4px;
+		margin-top: 7px;
+	}
+
+
 </style>
 
 </head>
@@ -75,7 +82,7 @@
 	<nav class="custom-wrapper pure-g" id="menu">
 	    <div class="pure-u-1 pure-u-md-1-3">
 	        <div class="pure-menu">
-	            <a class="pure-menu-heading custom-brand"><i class="fa fa-star"></i>Youtube Favorites</a>
+	            <a class="pure-menu-heading custom-brand"><span class="oi" data-glyph="star" title="icon name" aria-hidden="true"></span>Youtube Favorites</a>
 	            <a href="#" class="custom-toggle" id="toggle"><s class="bar"></s><s class="bar"></s></a>
 	        </div>
 	    </div>
@@ -140,15 +147,39 @@
 				    		Location filter radius
     						<input type="text" placeholder="Please enter radius">
 					    </div>
+
+					    <div id="orderOptions">
+					    	Order search results by:
+						    <label for="option-relevance" class="pure-radio">
+						        <input id="option-relevance" type="radio" name="optionsRadios" value="relevance" checked>
+						        relevance to the search query
+						    </label>
+
+						    <label for="option-date" class="pure-radio">
+						        <input id="option-date" type="radio" name="optionsRadios" value="date">
+						        date - reverse chronological order
+						    </label>
+
+						    <label for="option-rating" class="pure-radio">
+						        <input id="option-rating" type="radio" name="optionsRadios" value="rating">
+						        rating - from highest to lowest
+						    </label>
+
+						    <label for="option-title" class="pure-radio">
+						        <input id="option-title" type="radio" name="optionsRadios" value="title">
+						        title - alphebetically
+						    </label>
+					    </div>
 				    </div>
 
-				    <div class="pure-u-1 pure-u-md-1-3"><i class="fa fa-map"></i>
+				    <div class="pure-u-1 pure-u-md-1-3">
+	third column
 				    </div>
 				</div>
-
+				<br>
 			    <input id="searchPhrase" type="text" class="pure-input-2-3 pure-input-rounded" >
 			    <button type="submit" class="pure-button button-search">
-			    	<i class="fa fa-search"></i>
+			    	<span class="oi" aria-hidden="true" data-glyph="magnifying-glass"></span>
 			    	Search
 			    </button>
 
@@ -163,9 +194,9 @@
 	</div>
 
 	<hr>
-<iframe width="100%" height="315" src="https://www.youtube.com/embed/VP7WSM50KvU?rel=0" frameborder="0" allowfullscreen></iframe>
-
+		<!-- <iframe width="100%" height="315" src="https://www.youtube.com/embed/VP7WSM50KvU?rel=0" frameborder="0" allowfullscreen></iframe> -->
 	<hr>
+
 
 	<footer>
 		<div class="pure-g">
@@ -184,11 +215,12 @@
 
     <!-- app code -->
     <script src="src/apiKeys.js"></script>
-    <script src="src/accordion.js"></script>    
+    <script src="src/accordion.js"></script>
     <script src="src/uiFramework.js"></script>
     <script src='src/geolocation.js'></script>
-    <script src="src/searchBox.js"></script>       
-    <script src="src/main.js"></script>    
+    <script src="src/searchBox.js"></script>
+    <script src="src/youtubeAPI.js"></script>
+    <script src="src/main.js"></script>
 
 
 </body>

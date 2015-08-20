@@ -1,6 +1,6 @@
 var youtubeFavorites = ( function ($, my) {
 
-	my.debug_log = 1;					// Set to 0 for no output, 1 for yes, 2 for verbose
+	my.debug_log = 2;					// Set to 0 for no output, 1 for yes, 2 for verbose
 
 	my.constants = {
 		colorLight : '#ede9ce',			// main background yellowish white
@@ -33,6 +33,7 @@ var youtubeFavorites = ( function ($, my) {
 		// my.accordion.init();			is kicked off by uiFramework
 
 		my.searchBox.init();
+		my.youtubeAPI.init();		// right now, this doesn't do jack!
 		
 		// if ( my.storage.empty() ){		// if no saved favorites or view history
 

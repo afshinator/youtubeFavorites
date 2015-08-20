@@ -8,15 +8,18 @@ var youtubeFavorites = ( function ($, my) {
 			$locationRadius,
 			$currentLocationResults,
 			$otherLocation,
+			$orderOptions,
 
 			searchFilter = 'none',						// default is not to search by location
-			searchRadius = '10',						// default search radius
+			searchRadius = '100m',						// default search radius
 
 			firstClickOnCurrentLocation = true,			// 
 			firstclickOnOtherLocation = true,
 
 			latitude = 0,								// entered by user or from geolocation
 			longitude = 0,
+			searchOrder = '',
+			searchPhrase = '',
 
 
 		showOrHideElement = function( elt, show ) {
@@ -52,6 +55,54 @@ var youtubeFavorites = ( function ($, my) {
 		},
 
 
+		onSearchButtonClick = function( e ) {
+			var handleSearchSuccess = function( rawSearchResults ) {
+				console.log( 'Search results: ' );
+				console.log( rawSearchResults );
+			};
+
+			e.preventDefault();			// prevent search button click from refreshing page, ...
+
+			// Get the ordering options from the checkboxes
+			searchOrder = $orderOptions.find( 'input:checked' ).val();
+
+			// Get the actual search phrase
+			searchPhrase = $searchPhrase.val();
+
+
+			// Get long/lat and filter radius information out of input boxes
+			// for current location option, geolocation call should've already put long/lat in this modules variables
+			if ( searchFilter !== 'none' ) {
+				searchRadius = $locationRadius.find( 'input' ).val();
+
+				if ( searchFilter === 'place' ) {
+					latitude = $otherLocation.find( '#latitude' ).val();
+					longitude = $otherLocation.find( '#longitude' ).val();
+				} // else these values already set by geolocation
+
+				
+				if ( my.debug_log ) {
+					console.log( 'searchRadius:' + searchRadius + ', lat:' + latitude + ', long:' + longitude );
+				}
+
+				// Submit search request with location filter
+				my.youtubeAPI.simpleLocationBasedSearch( 
+					latitude, 
+					longitude, 
+					searchRadius, 
+					searchOrder,
+					searchPhrase,
+					handleSearchSuccess
+				);
+			}
+			else {
+				// Submit search request without location filter
+				my.youtubeAPI.simpleNoLocationSearch( searchOrder, searchPhrase, handleSearchSuccess );
+				return;
+			}
+		},
+
+
 		bindEvents = function() {
 			// Get radio button choice for search by location filter, 
 			// show radius input based on that selection, and call apropriate handler.
@@ -70,26 +121,11 @@ var youtubeFavorites = ( function ($, my) {
 				else if ( searchFilter === 'place' ) { handleOtherPlaceClick(); }
 			});
 
-			// Prevent submit button from refreshing page, ...
-			$submitButton.on( 'click', function( e ) {
-				e.preventDefault();
 
-				// Get long/lat and filter radius information out of input boxes
-				// for Current location, geolocation call should've already put long/lat in this modules variables
-				if ( searchFilter !== 'none' ) {
-					searchRadius = $locationRadius.find( 'input' ).val();
-
-					if ( searchFilter === 'place' ) {
-						latitude = $otherLocation.find( '#latitude' ).val();
-						longitude = $otherLocation.find( '#longitude' ).val();
-					} // else these values already set by geolocation
-					if ( my.debug_log ) {
-						console.log( 'searchRadius:' + searchRadius + ', lat:' + latitude + ', long:' + longitude );
-					}
-				}
-			});
-
+			// Prevent submit button from refreshing page, get all options out of input/check boxes, submit search
+			$submitButton.on( 'click', onSearchButtonClick );
 		},
+
 
 		init = function() {
 			// Search submit button
@@ -108,15 +144,17 @@ var youtubeFavorites = ( function ($, my) {
 			$otherLocation = $searchPanel.find( '#otherLocation' );
 			$otherLocation.removeClass( 'hidden' ).hide();
 
+			$orderOptions = $searchPanel.find( '#orderOptions'); // Search results ordering options checkboxes
+
 			bindEvents();
 
 			if ( my.debug_log ) { console.log( 'Search Box initialized.' ); }
 		},
 
+
 		handleGeolocationError = function( errStr ) {
 			$currentLocationResults.find('input').val( errStr );
 		};
-
 
 
 		return {
