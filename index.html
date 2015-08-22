@@ -79,15 +79,29 @@
 		top: 7px;
 		right: 17px;
 		width: 150px;
-		height: 75px;
+		height: 85px;
 		opacity: .8;
-		background: red;
+		background-color: red;
 		border-radius: 4px;
+		padding: 15px;
+		text-align: center;
 	}
 
-	#statusAlertBox span {
-		font-size: 2em;
+	#statusText {
+		font-size: 1.5em;
 	}
+
+	.statusImage {
+		padding-top: 5px;
+		font-size: 2.5em;
+	}
+
+	.shadow1{
+	    -webkit-box-shadow: 0 10px 6px -6px #777;
+	       -moz-box-shadow: 0 10px 6px -6px #777;
+	            box-shadow: 0 10px 6px -6px #777;
+	}
+
 
 </style>
 
@@ -218,19 +232,28 @@
 		    <div class="pure-u-1 pure-u-md-1-3">
 
 		    </div>
-		    <div class="pure-u-1 pure-u-md-1-3"> ... </div>
+
+		    <div class="pure-u-1 pure-u-md-1-3">
+		     ... 
+		    </div>
+
 		    <div class="pure-u-1 pure-u-md-1-3">
 		    	<div class="footerNav">Search</div>
 		    	<div class="footerNav">Search Results</div>
 		    	<div class="footerNav">Favorites</div>
 		    </div>
+
 		</div>
 	</footer>
 
 
-	<div id="statusAlertBox" >
-		<span class="oi" aria-hidden="true" data-glyph="magnifying-glass"></span>
+	<div id="statusAlertBox" class="shadow1">
+		<img class="statusImage" src="src/img/loading.gif" alt="loading spinner" width="55px">
+		<br>
+		<span id="statusText">Initializing...</span>
+		<!-- <span class="oi" aria-hidden="true" data-glyph="magnifying-glass"></span> -->
 	</div>
+
 
     <!-- app code -->
     <script src="src/apiKeys.js"></script>
@@ -240,7 +263,6 @@
     <script src="src/searchBox.js"></script>
     <script src="src/youtubeAPI.js"></script>
     <script src="src/main.js"></script>
-
 
 </body>
 </html>

@@ -63,6 +63,14 @@ var youtubeFavorites = ( function ($, my) {
 
 			e.preventDefault();			// prevent search button click from refreshing page, ...
 
+
+			my.uiFramework.updateAlertBoxStatusColor( 'red' );
+			my.uiFramework.updateStatusAlertImage( '<span class="oi statusImage" data-glyph="magnifying-glass" title="icon name" aria-hidden="true"></span>' );			
+			my.uiFramework.updateStatusAlertText( 'Searching...' );
+			my.uiFramework.showStatusAlertBox();
+
+
+
 			// Get the ordering options from the checkboxes
 			searchOrder = $orderOptions.find( 'input:checked' ).val();
 
@@ -80,7 +88,7 @@ var youtubeFavorites = ( function ($, my) {
 					longitude = $otherLocation.find( '#longitude' ).val();
 				} // else these values already set by geolocation
 
-				
+
 				if ( my.debug_log ) {
 					console.log( 'searchRadius:' + searchRadius + ', lat:' + latitude + ', long:' + longitude );
 				}
@@ -98,8 +106,9 @@ var youtubeFavorites = ( function ($, my) {
 			else {
 				// Submit search request without location filter
 				my.youtubeAPI.simpleNoLocationSearch( searchOrder, searchPhrase, handleSearchSuccess );
-				return;
 			}
+
+			return false;
 		},
 
 

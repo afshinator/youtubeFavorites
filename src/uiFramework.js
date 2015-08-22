@@ -4,6 +4,51 @@ var youtubeFavorites = ( function ($, my) {
 	my.uiFramework = function() {
 		
 		var $navMenuItem = $( 'nav .pure-menu-item' ),
+			$statusAlertBox = $( '#statusAlertBox' ),
+			$statusText = $( '#statusText' ),
+
+		/*
+		 * Status Alert Box functions --
+		 */
+
+		showStatusAlertBox = function() {
+			$statusAlertBox.show();
+		},
+
+		hideStatusAlertBox = function( duration ) {
+			$statusAlertBox.fadeOut( duration );
+		},
+
+		updateAlertBoxStatusColor = function( newColor ) {
+			$statusAlertBox.css( 'background', newColor ); 
+		},
+
+		// Update the text in the alert box with a different short phrase
+		updateStatusAlertText = function( shortPhrase ) {
+			$statusText.text( shortPhrase );
+		},
+
+		// Update the image in the status box with a new image or font-icon image
+		// Missing parameter will make it just remove the image		
+		updateStatusAlertImage = function( htmlSnippet ) {
+			$statusAlertBox.find( '.statusImage' ).remove();
+
+			if ( htmlSnippet ) {
+				$statusAlertBox.prepend( htmlSnippet ).addClass( '.statusImage' );
+			}
+		},
+
+		statusReady = function() {
+			updateStatusAlertImage();				
+			updateStatusAlertText( 'Ready!' );
+			updateAlertBoxStatusColor( 'green' );
+			hideStatusAlertBox( 1000 );
+		},
+
+
+		/*
+		 * Top Navigation menu functions --
+		 */
 
 		// Setup nav bar so that it can collapse to vertical
 		initNavMenu = function() {
@@ -105,7 +150,13 @@ var youtubeFavorites = ( function ($, my) {
 
 
 		return {
-			// init : init 				// auto-executing
+			// init : init 								// auto-executing, no need to call it
+			hideStatusAlertBox : hideStatusAlertBox,
+			showStatusAlertBox : showStatusAlertBox,
+			updateStatusAlertText : updateStatusAlertText,
+			updateStatusAlertImage : updateStatusAlertImage,
+			updateAlertBoxStatusColor : updateAlertBoxStatusColor,
+			statusReady : statusReady
 		};
 	}();
 
