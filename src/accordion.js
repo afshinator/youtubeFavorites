@@ -27,6 +27,11 @@ var youtubeFavorites = ( function ($, my) {
 			} 
 			else {
 				togglePanel( panelIndex );
+
+				// If the search panel was opened, set the focus to the search box
+				if ( panelIndex === 0 ) {
+					my.searchBox.setFocusToSearchBox();
+				}
 			}
 		},
 

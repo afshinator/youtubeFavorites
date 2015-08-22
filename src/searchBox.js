@@ -54,6 +54,12 @@ var youtubeFavorites = ( function ($, my) {
 
 		},
 
+		setSearchingStatus = function() {
+			my.uiFramework.updateAlertBoxStatusColor( 'red' );
+			my.uiFramework.updateStatusAlertImage( '<span class="oi statusImage" data-glyph="magnifying-glass" title="icon name" aria-hidden="true"></span>' );			
+			my.uiFramework.updateStatusAlertText( 'Searching...' );
+			my.uiFramework.showStatusAlertBox();
+		},
 
 		onSearchButtonClick = function( e ) {
 			var handleSearchSuccess = function( rawSearchResults ) {
@@ -63,13 +69,7 @@ var youtubeFavorites = ( function ($, my) {
 
 			e.preventDefault();			// prevent search button click from refreshing page, ...
 
-
-			my.uiFramework.updateAlertBoxStatusColor( 'red' );
-			my.uiFramework.updateStatusAlertImage( '<span class="oi statusImage" data-glyph="magnifying-glass" title="icon name" aria-hidden="true"></span>' );			
-			my.uiFramework.updateStatusAlertText( 'Searching...' );
-			my.uiFramework.showStatusAlertBox();
-
-
+			setSearchingStatus();
 
 			// Get the ordering options from the checkboxes
 			searchOrder = $orderOptions.find( 'input:checked' ).val();
@@ -108,7 +108,7 @@ var youtubeFavorites = ( function ($, my) {
 				my.youtubeAPI.simpleNoLocationSearch( searchOrder, searchPhrase, handleSearchSuccess );
 			}
 
-			return false;
+			my.uiFramework.statusReady();
 		},
 
 
@@ -160,6 +160,10 @@ var youtubeFavorites = ( function ($, my) {
 			if ( my.debug_log ) { console.log( 'Search Box initialized.' ); }
 		},
 
+		setFocusToSearchBox = function() {
+			$searchPhrase.focus();
+		},
+
 
 		handleGeolocationError = function( errStr ) {
 			$currentLocationResults.find('input').val( errStr );
@@ -168,7 +172,8 @@ var youtubeFavorites = ( function ($, my) {
 
 		return {
 			init : init,
-			handleGeolocationError : handleGeolocationError
+			handleGeolocationError : handleGeolocationError,
+			setFocusToSearchBox : setFocusToSearchBox
 		};
 	}();
 
