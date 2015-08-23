@@ -124,7 +124,7 @@ var youtubeFavorites = ( function ($, my) {
 
 // TODO: deal with click on 'Player On/Off'
 
-				// Compensate for 'Search Results' because it has two words; assumes DOM element id is 'ResultsTitle'
+				// Compensate for 'Search Results' because it has two words; assumes DOM element id is 'resultsTitle'
 				if ( targetText.split( ' ' ).length > 1 ) {
 					targetText = targetText.split( ' ' )[1];
 					panelIndex = 1;										// Index of 'Search Results'

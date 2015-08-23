@@ -47,8 +47,11 @@ var youtubeFavorites = ( function ($, my) {
 		},
 
 
-		simpleNoLocationSearch = function( order, searchTerm, searchSuccessHandler ) {
-			var apiParams = {
+		simpleNoLocationSearch = function( searchParams, searchSuccessHandler ) {
+			var order = searchParams.searchOrder,
+				searchTerm = searchParams.searchPhrase,
+
+				apiParams = {
 					part: 'snippet',
 					maxResults: 25,
 					q: searchTerm,
@@ -65,8 +68,14 @@ var youtubeFavorites = ( function ($, my) {
 		},
 
 
-		simpleLocationBasedSearch = function( lat, lon, radius, order, searchTerm, searchSuccessHandler ) {
-			var apiParams = {
+		simpleLocationBasedSearch = function( searchParams, searchSuccessHandler ) {
+			var order = searchParams.searchOrder,
+				searchTerm = searchParams.searchPhrase,
+				lat = searchParams.latitude,
+				lon = searchParams.longitude,
+				radius = searchParams.searchRadius,
+
+			 apiParams = {
 					part: 'snippet',
 					maxResults: 25,
 					q: searchTerm,

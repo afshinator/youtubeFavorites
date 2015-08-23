@@ -62,20 +62,33 @@ var youtubeFavorites = ( function ($, my) {
 		},
 
 		onSearchButtonClick = function( e ) {
-			var handleSearchSuccess = function( rawSearchResults ) {
-				console.log( 'Search results: ' );
-				console.log( rawSearchResults );
-			};
+			var searchParams = {},		// will be filled with details of the search
 
-			e.preventDefault();			// prevent search button click from refreshing page, ...
+				// Handler for youtube's reply to search request --> our results!
+				handleSearchSuccess = function( rawSearchResults ) {
+					my.uiFramework.statusReady();
+					// console.log( 'Search results: ' );
+					// console.log( rawSearchResults );
 
-			setSearchingStatus();
+					// The search box tells the searchData about a the new results, 
+					// then that will tell the searchResults object to display.
+					my.searchResults.setNewSearchResults( searchParams, rawSearchResults );
+				};
+
+			e.preventDefault();			// prevent search button click from refreshing page
+
+			setSearchingStatus();		// Tell UI alert box to show search icon
 
 			// Get the ordering options from the checkboxes
 			searchOrder = $orderOptions.find( 'input:checked' ).val();
 
 			// Get the actual search phrase
 			searchPhrase = $searchPhrase.val();
+
+
+			// the search details object 
+			searchParams.searchOrder = searchOrder;
+			searchParams.searchPhrase = searchPhrase;
 
 
 			// Get long/lat and filter radius information out of input boxes
@@ -93,22 +106,18 @@ var youtubeFavorites = ( function ($, my) {
 					console.log( 'searchRadius:' + searchRadius + ', lat:' + latitude + ', long:' + longitude );
 				}
 
+				searchParams.latitude = latitude;
+				searchParams.longitude = longitude;
+				searchParams.searchRadius = searchRadius;
+
 				// Submit search request with location filter
-				my.youtubeAPI.simpleLocationBasedSearch( 
-					latitude, 
-					longitude, 
-					searchRadius, 
-					searchOrder,
-					searchPhrase,
-					handleSearchSuccess
-				);
+				my.youtubeAPI.simpleLocationBasedSearch( searchParams, handleSearchSuccess );
 			}
 			else {
 				// Submit search request without location filter
-				my.youtubeAPI.simpleNoLocationSearch( searchOrder, searchPhrase, handleSearchSuccess );
+				my.youtubeAPI.simpleNoLocationSearch( searchParams, handleSearchSuccess );
 			}
 
-			my.uiFramework.statusReady();
 		},
 
 
