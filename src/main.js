@@ -32,6 +32,7 @@ var youtubeFavorites = ( function ($, my) {
 		// my.uiFramework.init(); 		not needed since it autoexecutes
 		// my.accordion.init();			is kicked off by uiFramework
 
+		my.storage.init();
 		my.searchBox.init();
 		my.youtubeAPI.init();		// right now, this doesn't do jack!
 		

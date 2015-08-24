@@ -8,7 +8,7 @@ var youtubeFavorites = ( function ($, my) {
 			$resultsTitle = $( '#resultsTitle' ),
 			rawData,
 			paginationLinks,
-			favoriteStar = '<span class="oi " data-glyph="star" title="icon name" aria-hidden="true"></span>',
+			favoriteStar = '<span class="oi " data-glyph="star" title="favorite Video" aria-hidden="true"></span>',
 
 
 
@@ -86,6 +86,12 @@ var youtubeFavorites = ( function ($, my) {
 				$( 'iframe' ).attr( 'src', "https://www.youtube.com/embed/" + $(this).data( 'videoid') + "?rel=0" );
 				my.accordion.closePanel(1);
 				my.accordion.openPanel(2);				
+			});
+
+			$( '.favButton' ).on( 'click', function(e) {
+				$(this).off();			// Turn off handler for this listing since its already going to be added to favorites
+				$(this).css( 'color', '#581B10' ).animate({fontSize: '1.5em'}, "slow");		// Give some feedback that it was clicked
+				console.log( $(this).parent().find( '.vidLink' ).data( 'index' ) );			// index of which one was clicked
 			});
 		},
 
