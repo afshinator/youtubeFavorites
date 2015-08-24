@@ -7,17 +7,9 @@ var youtubeFavorites = ( function ($, my) {
 			$resultsList = $( '#resultsList' ),
 			$resultsTitle = $( '#resultsTitle' ),
 			rawData,
-			resultsHtml,
 			paginationLinks,
+			favoriteStar = '<span class="oi " data-glyph="star" title="icon name" aria-hidden="true"></span>',
 
-
-		// SearchResult :
-		//	Description
-		//	publishedAt date
-		//	title
-		//	thumbnails
-		//	videoId
-		//	channel
 
 
 		setResultsSummary = function() {
@@ -36,20 +28,32 @@ var youtubeFavorites = ( function ($, my) {
 			if ( rawData.nextPageToken ) { paginationLinks += '<small><a>next page</a></small> '; }
 
 			resultsSummary += paginationLinks;
+			resultsSummary += '</p>';
 
 			$resultsSummary.empty().append( resultsSummary );
 		},
 
 
 		setResultsListings = function() {
-			resultsHtml = '<ul>';
+			var resultsHtml = '<ul class="listing">';
 
 			for ( var i = 0; i < rawData.items.length; i++ ) {
 				resultsHtml += '<li>';
-				resultsHtml += '<img src="' + rawData.items[i].snippet.thumbnails.default.url + '"> ';
-				resultsHtml += rawData.items[i].snippet.title + ' -- ';
-				resultsHtml += rawData.items[i].snippet.description;
-				resultsHtml += '</li>';
+
+				resultsHtml += '<a class="favButton right">' + favoriteStar + '</a>';
+				resultsHtml += '<div class="sideBySide ">';
+				resultsHtml += '<a class="shadow2 vidLink" data-index="' + i + '" data-videoId="' +  rawData.items[i].id.videoId + '">';
+				resultsHtml += '<img class="listingImage " src="' + rawData.items[i].snippet.thumbnails.default.url + '">';
+				resultsHtml += '</a></div>';
+
+				resultsHtml += '<div class="sideBySide">';
+				resultsHtml += '<a  data-index="' + i + '" data-videoId="' +  rawData.items[i].id.videoId + '">';
+				resultsHtml += rawData.items[i].snippet.title + "</a><br>";
+
+				resultsHtml += '<small>' + rawData.items[i].snippet.description + '</small>';
+
+				resultsHtml += '</div></li>';
+				resultsHtml += '<hr>';
 			}
 
 			resultsHtml += '</ul>';
@@ -58,18 +62,31 @@ var youtubeFavorites = ( function ($, my) {
 		},
 
 
+		setResultsFooter = function() {
+
+
+		},
+
 		setNewSearchResults = function( searchParams, rawSearchResults ) {
 			rawData = $.extend( true, searchParams, rawSearchResults );
 			console.log( rawData );
 
 			setResultsSummary();
 			setResultsListings();
+			setResultsFooter();
+
+			bindEvents();
 		},
 
 
 
 		bindEvents = function() {
-
+			$( '.vidLink' ).on( 'click', function() {
+				console.log( $(this).data( 'index' ) );
+				$( 'iframe' ).attr( 'src', "https://www.youtube.com/embed/" + $(this).data( 'videoid') + "?rel=0" );
+				my.accordion.closePanel(1);
+				my.accordion.openPanel(2);				
+			});
 		},
 
 

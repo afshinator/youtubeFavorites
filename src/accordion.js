@@ -22,7 +22,7 @@ var youtubeFavorites = ( function ($, my) {
 		},
 
 		openPanel = function( panelIndex ) {
-			if ( panelStatus[ panelIndex] ) {	// if its open, we dont need to do anything
+			if ( panelStatus[ panelIndex ] ) {	// if its open, we dont need to do anything
 				return;
 			} 
 			else {
@@ -35,6 +35,11 @@ var youtubeFavorites = ( function ($, my) {
 			}
 		},
 
+		closePanel = function( panelIndex ) {
+			if ( panelStatus[ panelIndex ] ) {	// only close it if its open
+				togglePanel( panelIndex );
+			}
+		},
 
 		bindEvents = function() {
 			$accordion.find( '.accordion-title' ).on( 'click', function() {
@@ -68,6 +73,7 @@ var youtubeFavorites = ( function ($, my) {
 		return {
 			init : init,
 			openPanel : openPanel,
+			closePanel : closePanel,
 			togglePanel : togglePanel
 		};
 	}();

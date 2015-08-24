@@ -70,6 +70,8 @@ var youtubeFavorites = ( function ($, my) {
 					// console.log( 'Search results: ' );
 					// console.log( rawSearchResults );
 
+					my.accordion.closePanel(0);
+					my.accordion.openPanel(1);
 					// The search box tells the searchData about a the new results, 
 					// then that will tell the searchResults object to display.
 					my.searchResults.setNewSearchResults( searchParams, rawSearchResults );
