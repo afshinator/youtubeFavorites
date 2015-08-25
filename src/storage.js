@@ -27,6 +27,10 @@ var youtubeFavorites = ( function ($, my) {
 
 		hasNothingSaved = function() {
 			return ( !data.storedData && !data.historyData );
+		},
+
+		store = function( allData ) {
+			localStorage.setItem( storageKey, JSON.stringify( allData ) );
 		};
 
 
@@ -39,7 +43,8 @@ console.log( JSON.parse( localStorage.getItem( 'car' ) ) );
 		return {
 			init : init,
 			data : data,
-			empty : hasNothingSaved
+			empty : hasNothingSaved,
+			store : store
 		};
 	}();
 

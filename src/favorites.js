@@ -5,23 +5,40 @@ var youtubeFavorites = ( function ($, my) {
 
 		var $favesPanel = $( '#panel3' ),
 			$favesList,
+			allFaves = [],
 
 
 		init = function() {
 			$favesList = $favesPanel.find( '#favesList' );
+
+			if ( ! my.storage.empty() ) {
+				allFaves = my.storage.data.storedData;
+			}
 		},
 
+
+		currentDate = function() {
+		    var d = new Date();
+		    return d.toLocaleString();
+		},
+
+
 		addFave = function( searchResultsIndex, searchResultsListing ) {
-			var listing = searchResultsListing.clone();
+			var listingHtml = searchResultsListing.clone(),		// Copy over the html from the search results listings
+				listingData;
 
-			listing.find( '.oi' ).remove();
-
-			listing.appendTo( $favesList );
-
-			// console.log( searchResultsListing.clone().appendTo( $favesList ) );
+			listingHtml.find( '.oi' ).remove();					// Remove the star icon from the html listing
+			listingHtml.appendTo( $favesList );					// Add it to favorites listings
 
 			my.uiFramework.showStatusAlertBox();
 			my.uiFramework.statusReady( '<span class="oi" data-glyph="star" title="favorites" aria-hidden="true"></span>', 'Favorite added' );
+
+			listingData = my.searchResults.getListingData( searchResultsIndex );
+			listingData.dateAddedToFaves = currentDate();
+
+			allFaves.push( listingData );
+
+			my.storage.store( allFaves );
 		};
 
 
