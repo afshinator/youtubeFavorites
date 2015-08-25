@@ -123,8 +123,6 @@ var youtubeFavorites = ( function ($, my) {
 
 				if ( targetText === 'Search' ) { panelIndex = 0; }		// Index of 'Search'
 
-// TODO: deal with click on 'Player On/Off'
-
 				// Compensate for 'Search Results' because it has two words; assumes DOM element id is 'resultsTitle'
 				if ( targetText.split( ' ' ).length > 1 ) {
 					targetText = targetText.split( ' ' )[1];
@@ -132,10 +130,11 @@ var youtubeFavorites = ( function ($, my) {
 				}
 
 				// Scroll to that accordion element
-				$( '#' + targetText + 'Title' ).goTo();
+				$( '#' + targetText.toLowerCase() + 'Title' ).goTo();
 
 				// Tell accordion to open appropriate panel
 				if ( panelIndex === null ) { panelIndex = 2; }   		// Index of 'Favorites'
+
 				my.accordion.openPanel( panelIndex );
 			});
 

@@ -35,15 +35,33 @@ var youtubeFavorites = ( function ($, my) {
 				console.log( apiParams );
 			}
 
-			jqxhr = $.get( searchEndPoint, apiParams, function( data ) {
-				if ( my.debug_log > 1 ) { console.log('info from request: '); console.info( data ); }
+			// jqxhr = $.get( searchEndPoint, apiParams, function( data ) {
+			// 	if ( my.debug_log > 1 ) { console.log('info from request: '); console.info( data ); }
+			// 	success = true;
+			// 	$.extend( rawSearchResults, data ); 		// deep object copy
+			// 	searchSuccessHandler( rawSearchResults );	// Execute function that was passed in			
+			// })
+			// .fail(function() {
+			// 	console.log( "error searching for term: " + apiParams.q );
+			// });
+
+
+			var request = $.ajax({
+			  url: searchEndPoint,
+			  method: "GET",
+			  data: apiParams
+			});
+
+			request.done(function( data ) {
 				success = true;
 				$.extend( rawSearchResults, data ); 		// deep object copy
-				searchSuccessHandler( rawSearchResults );	// Execute function that was passed in			
-			})
-			.fail(function() {
-				console.log( "error searching for term: " + apiParams.q );
-			});			
+				searchSuccessHandler( rawSearchResults );	// Execute function that was passed in	
+			});
+			 
+			request.fail(function( jqXHR, textStatus, errThrown) {
+			  alert( "Request failed: " + textStatus + ',' + errThrown );
+			});
+
 		},
 
 

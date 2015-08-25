@@ -3,7 +3,7 @@ var youtubeFavorites = ( function ($, my) {
 	my.storage = function() {
 	
 		// Stuff that nobody outside this module needs access to
-		var storagePrefix = 'youtubeViewer',
+		var storagePrefix = 'youtubeFavorites',
 			storageKey = storagePrefix + '-default',
 			historyKey = storagePrefix + '-history',
 
