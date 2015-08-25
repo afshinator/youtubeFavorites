@@ -34,13 +34,14 @@ var youtubeFavorites = ( function ($, my) {
 			$statusAlertBox.find( '.statusImage' ).remove();
 
 			if ( htmlSnippet ) {
-				$statusAlertBox.prepend( htmlSnippet ).addClass( '.statusImage' );
+				$statusAlertBox.prepend( htmlSnippet ).addClass( 'statusImage' );
 			}
 		},
 
-		statusReady = function() {
-			updateStatusAlertImage();				
-			updateStatusAlertText( 'Ready!' );
+		// without parameters it'll do a default
+		statusReady = function( img, txt ) {
+			updateStatusAlertImage( img );				
+			updateStatusAlertText( txt ? txt : 'Ready!' );
 			updateAlertBoxStatusColor( 'green' );
 			hideStatusAlertBox( 1000 );
 		},

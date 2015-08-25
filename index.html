@@ -88,12 +88,12 @@
 	}
 
 	#statusText {
-		font-size: 1.5em;
+		/*font-size: 1.5em;*/
 	}
 
 	.statusImage {
 		padding-top: 5px;
-		font-size: 2.5em;
+		font-size: 1.5em;
 	}
 
 	.shadow1{
@@ -126,8 +126,8 @@
 	list-style-type: none;
 }
 
-#panel2 li {
-	
+#panel3 ul {
+	list-style-type: none;	
 }
 
 .listingImage {
@@ -184,7 +184,7 @@
 	    <div class="pure-u-1 pure-u-md-1-3">
 	        <div class="pure-menu pure-menu-horizontal custom-menu-3 custom-can-transform">
 	            <ul class="pure-menu-list">
-	                <li class="pure-menu-item"><a class="pure-menu-link">Player On/Off</a></li>
+	                <!-- <li class="pure-menu-item"><a class="pure-menu-link">Player On/Off</a></li> -->
 	            </ul>
 	        </div>
 	    </div>
@@ -275,21 +275,22 @@
 	    <a id="resultsTitle" href="#panel2" class="accordion-title">Search Results</a>
 	    <div id="panel2" class="accordion-panel"> 
 	    	<div id="resultsSummary">
-
-
 	    	</div>
 
 	    	<div id="resultsList">
-
 	    	</div>
 	    </div>
 
-	    <a id="FavoritesTitle" href="#panel3" class="accordion-title">Favorites</a>
-	    <div id="panel3" class="accordion-panel"> five</div>
+	    <a id="favoritesTitle" href="#panel3" class="accordion-title">Favorites</a>
+	    <div id="panel3" class="accordion-panel">
+	    	<ul id="favesList" class="listing">
+	    	</ul>
+	    </div>
+
 	</div>
 
 	<hr>
-	<iframe width="100%" height="315" src="https://www.youtube.com/embed/VP7WSM50KvU?rel=0" frameborder="0" allowfullscreen></iframe>
+	<!-- <iframe width="100%" height="315" src="https://www.youtube.com/embed/VP7WSM50KvU?rel=0" frameborder="0" allowfullscreen></iframe> -->
 	<hr>
 
 
@@ -327,6 +328,7 @@
     <script src="src/uiFramework.js"></script>
     <script src="src/storage.js"></script>
     <script src='src/geolocation.js'></script>
+    <script src='src/favorites.js'></script>
     <script src="src/searchResults.js"></script>     
     <script src="src/searchBox.js"></script>
     <script src="src/youtubeAPI.js"></script>

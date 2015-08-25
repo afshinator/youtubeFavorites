@@ -37,7 +37,7 @@ var youtubeFavorites = ( function ($, my) {
 		my.youtubeAPI.init();		// right now, this doesn't do jack!
 		
 		my.uiFramework.statusReady();
-
+		my.favorites.init();
 		
 		// if ( my.storage.empty() ){		// if no saved favorites or view history
 

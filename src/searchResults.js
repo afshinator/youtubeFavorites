@@ -91,6 +91,9 @@ var youtubeFavorites = ( function ($, my) {
 			$( '.favButton' ).on( 'click', function(e) {
 				$(this).off();			// Turn off handler for this listing since its already going to be added to favorites
 				$(this).css( 'color', '#581B10' ).animate({fontSize: '1.5em'}, "slow");		// Give some feedback that it was clicked
+				
+				my.favorites.addFave( $(this).parent().find( '.vidLink' ).data( 'index' ), $(this).parent() );
+
 				console.log( $(this).parent().find( '.vidLink' ).data( 'index' ) );			// index of which one was clicked
 			});
 		},
