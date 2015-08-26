@@ -35,7 +35,7 @@ var youtubeFavorites = ( function ($, my) {
 
 
 		setResultsListings = function() {
-			var resultsHtml = '<ul class="videoList">';
+			var resultsHtml = '<ul id="resultsListings" class="videoList">';
 
 			for ( var i = 0; i < rawData.items.length; i++ ) {
 				resultsHtml += '<li data-index="' + i + '" data-videoId="' +  rawData.items[i].id.videoId + '" >';
@@ -56,7 +56,7 @@ var youtubeFavorites = ( function ($, my) {
 
 				resultsHtml += '</li>';
 
-				resultsHtml += '<hr>';
+				resultsHtml += '<hr class="style-two">';
 			}
 
 			resultsHtml += '</ul>';
@@ -87,11 +87,14 @@ var youtubeFavorites = ( function ($, my) {
 
 
 		unbindEvents = function() {
-			$( '.videoList' ).off();
+			$( '#resultsListings' ).off();
 		};
 
 		bindEvents = function() {
-			$( '.videoList' ).on( 'click', function( e ) {
+
+			// Handle click on a search results entry
+			//
+			$( '#resultsListings' ).on( 'click', function( e ) {
 				// delegated event caught, so grab who in particular was clicked on and find its parent <li> where data resides
 				var eltClickedOn = $( e.target ),
 					listEntryClicked$,
@@ -125,8 +128,10 @@ var youtubeFavorites = ( function ($, my) {
 				// They didnt click on description or star, so it must be the video link or title...
 
 				$( 'iframe' ).attr( 'src', "https://www.youtube.com/embed/" + videoId + "?rel=0" );
+
+				// CLose both the Search Results and the Favorites panel so the video is viewable
 				my.accordion.closePanel(1);
-				my.accordion.openPanel(2);	
+				my.accordion.closePanel(2);	
 			});
 		},
 

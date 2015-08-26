@@ -2,9 +2,8 @@ var youtubeFavorites = ( function ($, my) {
 
 	my.favorites = function() {
 	
-
 		var $favesPanel = $( '#panel3' ),
-			$favesList = $( '#favesList' ),
+			$favesList = $( '#favesListings' ),
 			deleteFaveIcon = '<span class="oi " data-glyph="x" title="delete favorite" aria-hidden="true"></span>',
 			allFaves = [],
 
@@ -15,41 +14,51 @@ var youtubeFavorites = ( function ($, my) {
 			}
 		},
 
-
+		// Return the current date minus the seconds
 		currentDate = function() {
-		    var d = new Date();
-		    return d.toLocaleString();
+		    var d = new Date().toLocaleString(),
+		    	ampm = d.substr( d.length - 2 ),
+		    	partToKeep = d.substring( 0, d.lastIndexOf( ':' ) );
+
+		    if ( my.debug_log > 1 ) { console.log( 'date ' + partToKeep + ' ' + ampm ); }
+		 
+		    return partToKeep + ' ' + ampm;
 		},
 
 
 		restoreFavesFromStorage = function( storedData ) {
-			var resultsHtml = '<ul class="videoList">';
+			var resultsHtml =  '';  
 
 			for ( var i = 0; i < storedData.length; i++ ) {
+				resultsHtml += '<li data-index="' + i + '" data-videoId="' +  storedData[i].id.videoId + '" >';
+
 				// The delete favorite button
-				resultsHtml += '<a class="favButton right">' + deleteFaveIcon + '</a>';
+				resultsHtml += '<a class="right">' + deleteFaveIcon + '</a>';
 
 				// The listing itself
 				resultsHtml += '<div class="sideBySide ">';
-				resultsHtml += '<a class="shadow2 vidLink" data-index="' + i + '" data-videoId="' +  storedData[i].id.videoId + '">';
-				resultsHtml += '<img class="listingImage " src="' + storedData[i].snippet.thumbnails.default.url + '">';
-				resultsHtml += '</a></div>';
+					resultsHtml += '<a class="shadow2 vidLink" >';
+					resultsHtml += '<img class="listingImage" src="' + storedData[i].snippet.thumbnails.default.url + '">';
+					resultsHtml += '</a>';
+				resultsHtml += '</div>';
 
 				resultsHtml += '<div class="sideBySide">';
-				resultsHtml += '<a  data-index="' + i + '" data-videoId="' +  storedData[i].id.videoId + '">';
-				resultsHtml += storedData[i].snippet.title + "</a><br>";
+					resultsHtml += '<a>';
+					resultsHtml += storedData[i].snippet.title + "</a><br>";
+					resultsHtml += '<small>' + storedData[i].snippet.description;
+					resultsHtml += '<br><i>Date added to favorites: ' + storedData[i].dateAddedToFaves + '</i></small>';
+				resultsHtml += '</div>';
 
-				resultsHtml += '<small>' + storedData[i].snippet.description + '</small>';
+				resultsHtml += '</li>';
 
-				resultsHtml += '<br><i>Date added to favorites: ' + storedData[i].dateAddedToFaves + '</i>';
-
-				resultsHtml += '</div></li>';
-				resultsHtml += '<hr>';
+				resultsHtml += '<hr class="style-two">';
 			}
 
-			resultsHtml += '</ul>';
+			// resultsHtml += '</ul>';
 
 			$favesList.append( resultsHtml );
+
+			bindEvents();
 		},
 
 
@@ -57,14 +66,21 @@ var youtubeFavorites = ( function ($, my) {
 			var listingHtml = searchResultsListing.clone(),		// Copy over the html from the search results listings
 				listingData;
 
+			listingData = my.searchResults.getListingData( searchResultsIndex );
+			listingData.dateAddedToFaves = currentDate();
+			listingData.etag.delete;							// get rid of useless info
+
+console.log( listingHtml );
 			listingHtml.find( '.oi' ).remove();					// Remove the star icon from the html listing
+			listingHtml.prepend( '<a class="right">' + deleteFaveIcon + '</a>' );
+			// add the date so it shows immediately in the listings
+			listingHtml.find( 'small' ).append( '<br><i>Date added to favorites: ' + listingData.dateAddedToFaves + '</i></small>' );
+			listingHtml.append( '<hr class="style-two">' );
 			listingHtml.appendTo( $favesList );					// Add it to favorites listings
 
 			my.uiFramework.showStatusAlertBox();
 			my.uiFramework.statusReady( '<span class="oi" data-glyph="star" title="favorites" aria-hidden="true"></span>', 'Favorite added' );
 
-			listingData = my.searchResults.getListingData( searchResultsIndex );
-			listingData.dateAddedToFaves = currentDate();
 
 			allFaves.push( listingData );
 
@@ -73,13 +89,55 @@ var youtubeFavorites = ( function ($, my) {
 
 
 		bindEvents = function() {
-			$( '.vidLink' ).on( 'click', function() {
-				console.log( $(this).data( 'index' ) );
-				$( 'iframe' ).attr( 'src', "https://www.youtube.com/embed/" + $(this).data( 'videoid') + "?rel=0" );
+			$( '#favesListings' ).on( 'click', function( e ) {
+				// delegated event caught, so grab who in particular was clicked on and find its parent <li> where data resides
+				var eltClickedOn = $( e.target ),
+					listEntryClicked$,
+					index,
+					videoId,
+					newAllFaves = [];
 
-				
+				listEntryClicked$ = eltClickedOn.closest( 'li' );
+
+
+				// Clicked on the description?  Dont do anything
+				if ( eltClickedOn.is( 'small' ) ) return;
+
+
+				index = listEntryClicked$.data( 'index' );
+				videoId = listEntryClicked$.data( 'videoid' );
+
+				// Clicked on delete button for favorite?
+				if ( eltClickedOn.is( 'span' ) ) {
+					console.log('clicked on delete favorite button for : ' + index );
+
+					// Copy contents of favorties to new array, skip the element we're deleting
+					for ( var i = 0; i < index; i++ ){
+						newAllFaves.push( allFaves[i] );
+					}
+
+					for ( i = index + 1; i < allFaves.length; i++ ) {
+						newAllFaves.push( allFaves[i] );
+					}
+
+					listEntryClicked$.next( 'hr' ).remove();
+					listEntryClicked$.fadeOut( "slow", function() { $(this).remove(); });
+
+					allFaves = newAllFaves;
+
+					my.storage.store( allFaves );					
+
+					return;
+				}
+
+				// They didnt click on description or delete, so it must be the video link or title...
+
+				$( 'iframe' ).attr( 'src', "https://www.youtube.com/embed/" + videoId + "?rel=0" );
+
+				// CLose both the Search Results and the Favorites panel so the video is viewable
 				my.accordion.closePanel(1);
-				my.accordion.openPanel(2);				
+				my.accordion.closePanel(2);	
+
 			});
 		};		
 
