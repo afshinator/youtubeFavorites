@@ -4,13 +4,12 @@ var youtubeFavorites = ( function ($, my) {
 	
 
 		var $favesPanel = $( '#panel3' ),
-			$favesList,
+			$favesList = $( '#favesList' ),
+			deleteFaveIcon = '<span class="oi " data-glyph="x" title="delete favorite" aria-hidden="true"></span>',
 			allFaves = [],
 
 
 		init = function() {
-			$favesList = $favesPanel.find( '#favesList' );
-
 			if ( ! my.storage.empty() ) {
 				allFaves = my.storage.data.storedData;
 			}
@@ -20,6 +19,37 @@ var youtubeFavorites = ( function ($, my) {
 		currentDate = function() {
 		    var d = new Date();
 		    return d.toLocaleString();
+		},
+
+
+		restoreFavesFromStorage = function( storedData ) {
+			var resultsHtml = '<ul class="videoList">';
+
+			for ( var i = 0; i < storedData.length; i++ ) {
+				// The delete favorite button
+				resultsHtml += '<a class="favButton right">' + deleteFaveIcon + '</a>';
+
+				// The listing itself
+				resultsHtml += '<div class="sideBySide ">';
+				resultsHtml += '<a class="shadow2 vidLink" data-index="' + i + '" data-videoId="' +  storedData[i].id.videoId + '">';
+				resultsHtml += '<img class="listingImage " src="' + storedData[i].snippet.thumbnails.default.url + '">';
+				resultsHtml += '</a></div>';
+
+				resultsHtml += '<div class="sideBySide">';
+				resultsHtml += '<a  data-index="' + i + '" data-videoId="' +  storedData[i].id.videoId + '">';
+				resultsHtml += storedData[i].snippet.title + "</a><br>";
+
+				resultsHtml += '<small>' + storedData[i].snippet.description + '</small>';
+
+				resultsHtml += '<br><i>Date added to favorites: ' + storedData[i].dateAddedToFaves + '</i>';
+
+				resultsHtml += '</div></li>';
+				resultsHtml += '<hr>';
+			}
+
+			resultsHtml += '</ul>';
+
+			$favesList.append( resultsHtml );
 		},
 
 
@@ -39,12 +69,25 @@ var youtubeFavorites = ( function ($, my) {
 			allFaves.push( listingData );
 
 			my.storage.store( allFaves );
-		};
+		},
+
+
+		bindEvents = function() {
+			$( '.vidLink' ).on( 'click', function() {
+				console.log( $(this).data( 'index' ) );
+				$( 'iframe' ).attr( 'src', "https://www.youtube.com/embed/" + $(this).data( 'videoid') + "?rel=0" );
+
+				
+				my.accordion.closePanel(1);
+				my.accordion.openPanel(2);				
+			});
+		};		
 
 
 		return {
 			init : init,
-			addFave : addFave
+			addFave : addFave,
+			restoreFavesFromStorage : restoreFavesFromStorage
 		};
 	}();
 

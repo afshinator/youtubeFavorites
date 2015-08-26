@@ -7,9 +7,7 @@ var youtubeFavorites = ( function ($, my) {
 		colorMustard : '#c7ad88',		// search
 		colorDkGrey: '#64706c',			// search results
 		colorRust: '#935347'			// favorites
-
 	};
-
 
 
 	/* 
@@ -38,13 +36,8 @@ var youtubeFavorites = ( function ($, my) {
 		
 		my.uiFramework.statusReady();
 		my.favorites.init();
-		
-		// if ( my.storage.empty() ){		// if no saved favorites or view history
-
-		// }
 
 	}
-
 
 
 	return my;

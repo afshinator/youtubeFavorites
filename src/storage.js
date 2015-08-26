@@ -19,25 +19,32 @@ var youtubeFavorites = ( function ($, my) {
 			data.storedData = JSON.parse( localStorage.getItem( storageKey ) );	// Get previously saved favorites from localstorage
 			data.historyData = JSON.parse( localStorage.getItem( historyKey ) );	// Get history list
 
-			if ( my.debug_log ) {
-				console.log( 'storedData:' + data.storedData );
+			if ( my.debug_log > 1 ) {
+				console.log( 'stored data array length :' + data.storedData.length );
+				console.log( data.storedData );
 				console.log( 'historyData:' + data.historyData );
+			}
+
+			// If there is saved favorites, restore them and open the faves accordion
+			if ( data.storedData.length ) {
+				my.favorites.restoreFavesFromStorage( data.storedData );
+				my.accordion.openPanel(2);
 			}			
 		},
+
 
 		hasNothingSaved = function() {
 			return ( !data.storedData && !data.historyData );
 		},
 
+
 		store = function( allData ) {
+			console.log('in storage.js::store()' );
+			console.log( allData );
+
 			localStorage.setItem( storageKey, JSON.stringify( allData ) );
 		};
 
-
-/*
-localStorage.setItem( 'car', JSON.stringify(car) );
-console.log( JSON.parse( localStorage.getItem( 'car' ) ) );
-*/
 
 
 		return {
