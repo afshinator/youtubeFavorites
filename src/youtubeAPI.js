@@ -30,7 +30,7 @@ var youtubeFavorites = ( function ($, my) {
 		sendSearchRequest = function( apiParams, searchSuccessHandler ) {
 			var success = false;
 
-			if ( my.debug_log > 1 ) { 
+			if ( my.debug_log ) { 
 				console.log( 'In youtubeAPI, search params: ' );
 				console.log( apiParams );
 			}

@@ -2,7 +2,7 @@ var youtubeFavorites = ( function ($, my) {
 
 	// Some globally accessible values
 	// 
-	my.debug_log = 2;					// Set to 0 for no output, 1 for yes, 2 for verbose
+	my.debug_log = 1;					// Set to 0 for no output, 1 for yes, 2 for verbose
 
 	my.constants = {
 		colorLight : '#ede9ce',			// main background yellowish white

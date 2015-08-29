@@ -8,6 +8,7 @@ var youtubeFavorites = ( function ($, my) {
 			$resultsTitle = $( '#resultsTitle' ),
 			rawData,
 			paginationLinks,
+			pageNumber = 1,							// will be updated by prev/next page click handler
 			favoriteStar = '<span class="oi " data-glyph="star" title="favorite Video" aria-hidden="true"></span>',
 
 
@@ -23,11 +24,20 @@ var youtubeFavorites = ( function ($, my) {
 			// Add the search term to the title of the Search Results accordion panel
 			$resultsTitle.html( 'Search Results <small>for: "' + searchPhrase + '"</small>' );
 
-			resultsSummary += '<p>Showing ' + rawData.pageInfo.resultsPerPage + ' of ' + rawData.pageInfo.totalResults + ' results.  ';
-			
+			if ( rawData.pageInfo.totalResults - rawData.pageInfo.resultsPerPage < 0 ) {
+				resultsSummary += '<p>Showing all ' + rawData.pageInfo.totalResults  + ' results.';
+			} else {
+				// | 0 will turn a float into an int
+				resultsSummary += '<p>Showing page ' + pageNumber + ' of ' + 
+				( ( rawData.pageInfo.totalResults / rawData.pageInfo.resultsPerPage ) | 0 ) + ' pages.';
+			}
+
+
 			// For pagination
-			if ( rawData.prevPageToken ) { paginationLinks += '<small><a class="nextOrPrevLinks" data-to="prev">' + prev + ' previous page</a></small>  '; }
-			if ( rawData.nextPageToken ) { paginationLinks += '<small><a class="nextOrPrevLinks" data-to="next">' + next + ' next page</a></small> '; }
+			if ( rawData.prevPageToken && rawData.prevPageToken !== rawData.pageToken) { 
+				paginationLinks += '<small><a class="nextOrPrevLinks" data-to="prev">' + prev + ' Previous page</a></small>  '; 
+			}
+			if ( rawData.nextPageToken ) { paginationLinks += '<small><a class="nextOrPrevLinks" data-to="next">' + next + ' Next page</a></small> '; }
 
 			resultsSummary += paginationLinks;
 			resultsSummary += '</p>';
@@ -52,17 +62,17 @@ var youtubeFavorites = ( function ($, my) {
 				resultsHtml += '<div class="sideBySide" >';
 					resultsHtml += '<a>';
 
-kind = rawData.items[i].id.kind;
-kind = kind.substr( kind.indexOf( '#' ) + 1 );
-if ( kind === 'video' ) {
-	resultsHtml += '<span class="oi resultType" data-glyph="video" title="video" aria-hidden="true"></span> ';
-} else 
-if ( kind === 'playlist' ) {
-	resultsHtml += '<span class="oi resultType" data-glyph="list" title="playlist" aria-hidden="true"></span> ';
-} else
-if ( kind === 'channel' ) {
-	resultsHtml += '<span class="oi resultType" data-glyph="dial" title="channel" aria-hidden="true"></span> ';	
-}
+					kind = rawData.items[i].id.kind;
+					kind = kind.substr( kind.indexOf( '#' ) + 1 );
+					if ( kind === 'video' ) {
+						resultsHtml += '<span class="oi resultType" data-glyph="video" title="video" aria-hidden="true"></span> ';
+					} else 
+					if ( kind === 'playlist' ) {
+						resultsHtml += '<span class="oi resultType" data-glyph="list" title="playlist" aria-hidden="true"></span> ';
+					} else
+					if ( kind === 'channel' ) {
+						resultsHtml += '<span class="oi resultType" data-glyph="dial" title="channel" aria-hidden="true"></span> ';	
+					}
 
 					resultsHtml += rawData.items[i].snippet.title + "</a><br>";
 					resultsHtml += '<small>' + rawData.items[i].snippet.description + '</small>';
@@ -90,11 +100,18 @@ if ( kind === 'channel' ) {
 
 
 		// Called by searchBox to handle successful search
-		setNewSearchResults = function( searchParams, rawSearchResults ) {
+		// third parameter set to true when called because of page change (with same search term)
+		setNewSearchResults = function( searchParams, rawSearchResults, skipPageNumberReset ) {
+			rawData = null;
+
 			// add search params to obj so we have history of what the search was
 			rawData = $.extend( true, searchParams, rawSearchResults );
 			
 			if ( my.debug_log > 1 ) { console.log( rawData ); }
+
+			// when skipPageNumberReset is true, it was called when we're going to next or prev page
+			// so we need to preserve the pageNumber change.
+			if ( ! skipPageNumberReset ) { pageNumber = 1; }
 
 			unbindEvents();		// unbind previous listing handlers, if any
 
@@ -163,8 +180,10 @@ if ( kind === 'channel' ) {
 
 				if ( $(this).data( 'to' ) === 'prev' ) {
 					params.pageToken = rawData.prevPageToken;
+					pageNumber--; 		// private var used to show what page number of results currently showing
 				} else {
 					params.pageToken = rawData.nextPageToken;
+					pageNumber++;
 				}
 
 
@@ -172,15 +191,13 @@ if ( kind === 'channel' ) {
 				if ( ! rawData.hasOwnProperty( 'latitude' ) ) {
 					my.youtubeAPI.simpleNoLocationSearch( params, function( rawSearchResults ) {
 						my.statusAlert.statusReady();
-						setNewSearchResults( params, rawSearchResults );
+						setNewSearchResults( params, rawSearchResults, true );
 					});
 				}
 				else {
 					// TODO: location based search
 				}
 
-
-				console.log( rawData );
 			});
 		},
 
