@@ -27,7 +27,8 @@ var youtubeFavorites = ( function ($, my) {
 
 
 		restoreFavesFromStorage = function( storedData ) {
-			var resultsHtml =  '';  
+			var resultsHtml =  '',
+				kind = '';
 
 			for ( var i = 0; i < storedData.length; i++ ) {
 				resultsHtml += '<li data-index="' + i + '" data-videoId="' +  storedData[i].id.videoId + '" >';
@@ -44,6 +45,17 @@ var youtubeFavorites = ( function ($, my) {
 
 				resultsHtml += '<div class="sideBySide">';
 					resultsHtml += '<a>';
+kind = storedData[i].id.kind;
+kind = kind.substr( kind.indexOf( '#' ) + 1 );
+if ( kind === 'video' ) {
+	resultsHtml += '<span class="oi resultType" data-glyph="video" title="video" aria-hidden="true"></span> ';
+} else 
+if ( kind === 'playlist' ) {
+	resultsHtml += '<span class="oi resultType" data-glyph="list" title="playlist" aria-hidden="true"></span> ';
+} else
+if ( kind === 'channel' ) {
+	resultsHtml += '<span class="oi resultType" data-glyph="dial" title="channel" aria-hidden="true"></span> ';	
+}					
 					resultsHtml += storedData[i].snippet.title + "</a><br>";
 					resultsHtml += '<small>' + storedData[i].snippet.description;
 					resultsHtml += '<br><i>Date added to favorites: ' + storedData[i].dateAddedToFaves + '</i></small>';
@@ -70,16 +82,16 @@ var youtubeFavorites = ( function ($, my) {
 			listingData.dateAddedToFaves = currentDate();
 			listingData.etag.delete;							// get rid of useless info
 
-console.log( listingHtml );
 			listingHtml.find( '.oi' ).remove();					// Remove the star icon from the html listing
-			listingHtml.prepend( '<a class="right">' + deleteFaveIcon + '</a>' );
+			listingHtml.prepend( '<a class="right">' + deleteFaveIcon + '</a>' ); 	// Add the delete button
+			
 			// add the date so it shows immediately in the listings
 			listingHtml.find( 'small' ).append( '<br><i>Date added to favorites: ' + listingData.dateAddedToFaves + '</i></small>' );
 			listingHtml.append( '<hr class="style-two">' );
 			listingHtml.appendTo( $favesList );					// Add it to favorites listings
 
-			my.uiFramework.showStatusAlertBox();
-			my.uiFramework.statusReady( '<span class="oi" data-glyph="star" title="favorites" aria-hidden="true"></span>', 'Favorite added' );
+			my.statusAlert.showStatusAlertBox();
+			my.statusAlert.statusReady( '<span class="oi" data-glyph="star" title="favorites" aria-hidden="true"></span>', 'Favorite added' );
 
 
 			allFaves.push( listingData );

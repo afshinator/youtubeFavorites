@@ -1,5 +1,7 @@
 var youtubeFavorites = ( function ($, my) {
 
+	// Some globally accessible values
+	// 
 	my.debug_log = 2;					// Set to 0 for no output, 1 for yes, 2 for verbose
 
 	my.constants = {
@@ -9,23 +11,33 @@ var youtubeFavorites = ( function ($, my) {
 		colorRust: '#935347'			// favorites
 	};
 
+	my.searchDisabled = false;			// set to true if api key not found
 
-	/* 
-	 * 	--------- 	App startup
-	 */
 
+ 	// --------- 	App startup
+ 	//
+	my.statusAlert.init();				// Put up an initializing message
+
+	// API key needed to access the search api, should be in 'apiKeys.js' file;
+	// If not defined for whatever reason, we can't call Youtube API
 	if ( ! my.googleSearchApiAuthKey ) {
-		// API key needed to access the search api, 
-		// 'youtubeAPI.js' should contain that key, but its not defined!
-		// Read the project README.md file.
+		// alert that no api was found.
+		my.statusAlert.updateAlertBoxStatusColor( 'red' );
+		my.statusAlert.updateStatusAlertImage( '<span class="oi statusImage" data-glyph="warning" title="warning" aria-hidden="true"></span>' );			
+		my.statusAlert.updateStatusAlertText( 'No Youtube API key found! Search disabled' );
+		my.statusAlert.showStatusAlertBox( function() {
+			var problem = 'Uh oh, no youtube API key found in apiKeys.js!';
 
-		// No api access, therefore terminate program
-		var problem = 'No youtube API key found in apiKeys.js!';
-		console.error( problem + '  my.googleSearchApiAuthKey = ' + my.googleSearchApiAuthKey );
-		alert( problem + ' You have to get your own.  See the project readme for instructions on how to fix this.');
-		throw problem;		// todo: make an exit fx that tells all objects to end()
-	} 
-	else {		// happy path: youtube api key was where it should be
+			my.searchDisabled = true;			// search can't work w/o api key
+
+			console.error( problem + ' User will not be able to search.' );
+			// alert( problem + ' You have to get your own.  See the project readme for instructions on how to fix this.');
+			// throw problem;			
+		});
+
+	}
+	// happy path: youtube api key was where it should be	
+	else {
 
 		// my.uiFramework.init(); 		not needed since it autoexecutes
 		// my.accordion.init();			is kicked off by uiFramework
@@ -34,9 +46,8 @@ var youtubeFavorites = ( function ($, my) {
 		my.searchBox.init();
 		my.youtubeAPI.init();		// right now, this doesn't do jack!
 		
-		my.uiFramework.statusReady();
 		my.favorites.init();
-
+		my.statusAlert.statusReady();
 	}
 
 

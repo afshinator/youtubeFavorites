@@ -78,7 +78,11 @@ var youtubeFavorites = ( function ($, my) {
 				};
 
 			// if same as last query, then result is already in rawSearchResults
-			if ( searchTerms.length && searchTerm === lastSearchTerm() ) return;	// todo: expand this criteria ?
+			// if ( searchTerms.length && searchTerm === lastSearchTerm() ) return;	// todo: expand this criteria ?
+
+			if ( searchParams.hasOwnProperty( 'pageToken' ) ) {
+				apiParams.pageToken = searchParams.pageToken;
+			}
 
 			searchTerms.push( searchTerm );				// save the last search term
 
@@ -105,6 +109,10 @@ var youtubeFavorites = ( function ($, my) {
 
 			// if same as last query, then result is already in rawSearchResults
 			if ( searchTerms.length && searchTerm === lastSearchTerm() ) return;	// todo: expand this criteria ?
+
+			if ( searchParams.hasOwnProperty( 'pageToken' ) ) {
+				apiParams.pageToken = searchParams.pageToken;
+			}
 
 			searchTerms.push( searchTerm );				// save the last search term
 

@@ -55,10 +55,10 @@ var youtubeFavorites = ( function ($, my) {
 		},
 
 		setSearchingStatus = function() {
-			my.uiFramework.updateAlertBoxStatusColor( 'red' );
-			my.uiFramework.updateStatusAlertImage( '<span class="oi statusImage" data-glyph="magnifying-glass" title="icon name" aria-hidden="true"></span>' );			
-			my.uiFramework.updateStatusAlertText( 'Searching...' );
-			my.uiFramework.showStatusAlertBox();
+			my.statusAlert.updateAlertBoxStatusColor( 'red' );
+			my.statusAlert.updateStatusAlertImage( '<span class="oi statusImage" data-glyph="magnifying-glass" title="icon name" aria-hidden="true"></span>' );			
+			my.statusAlert.updateStatusAlertText( 'Searching...' );
+			my.statusAlert.showStatusAlertBox();
 		},
 
 		onSearchButtonClick = function( e ) {
@@ -66,7 +66,7 @@ var youtubeFavorites = ( function ($, my) {
 
 				// Handler for youtube's reply to search request --> our results!
 				handleSearchSuccess = function( rawSearchResults ) {
-					my.uiFramework.statusReady();
+					my.statusAlert.statusReady();
 					// console.log( 'Search results: ' );
 					// console.log( rawSearchResults );
 
@@ -142,12 +142,15 @@ var youtubeFavorites = ( function ($, my) {
 			});
 
 
-			// Prevent submit button from refreshing page, get all options out of input/check boxes, submit search
-			$submitButton.on( 'click', onSearchButtonClick );
+			// Search might be disabled because of no youtube API key
+			if ( ! my.searchDisabled  ) {
+				// Get all options out of input/check boxes, submit search, prevent page refresh
+				$submitButton.on( 'click', onSearchButtonClick );
+			}
 		},
 
 
-		init = function() {
+		init = function( disableSearch ) {
 			// Search submit button
 			$submitButton = $searchPanel.find( 'button[type="submit"]' );
 

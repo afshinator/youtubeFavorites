@@ -11,10 +11,12 @@ var youtubeFavorites = ( function ($, my) {
 			favoriteStar = '<span class="oi " data-glyph="star" title="favorite Video" aria-hidden="true"></span>',
 
 
-
+		// After the search is done, show some information about the search results at the top before the actual results
 		setResultsSummary = function() {
 			var searchPhrase = rawData.searchPhrase.length > 50 ? (rawData.searchPhrase.substring(0, 50) + '...') : rawData.searchPhrase,
-				resultsSummary = '';
+				resultsSummary = '',
+				prev = '<span class="oi " data-glyph="arrow-circle-left" title="previous page" aria-hidden="true"></span>',
+				next = '<span class="oi " data-glyph="arrow-circle-right" title="next page" aria-hidden="true"></span>';
 
 			paginationLinks = '';
 
@@ -24,8 +26,8 @@ var youtubeFavorites = ( function ($, my) {
 			resultsSummary += '<p>Showing ' + rawData.pageInfo.resultsPerPage + ' of ' + rawData.pageInfo.totalResults + ' results.  ';
 			
 			// For pagination
-			if ( rawData.prevPageToken ) { paginationLinks += '<small><a>previous page</a></small>  '; }
-			if ( rawData.nextPageToken ) { paginationLinks += '<small><a>next page</a></small> '; }
+			if ( rawData.prevPageToken ) { paginationLinks += '<small><a class="nextOrPrevLinks" data-to="prev">' + prev + ' previous page</a></small>  '; }
+			if ( rawData.nextPageToken ) { paginationLinks += '<small><a class="nextOrPrevLinks" data-to="next">' + next + ' next page</a></small> '; }
 
 			resultsSummary += paginationLinks;
 			resultsSummary += '</p>';
@@ -35,7 +37,8 @@ var youtubeFavorites = ( function ($, my) {
 
 
 		setResultsListings = function() {
-			var resultsHtml = '<ul id="resultsListings" class="videoList">';
+			var resultsHtml = '<ul id="resultsListings" class="videoList">',
+				kind = '';
 
 			for ( var i = 0; i < rawData.items.length; i++ ) {
 				resultsHtml += '<li data-index="' + i + '" data-videoId="' +  rawData.items[i].id.videoId + '" >';
@@ -48,6 +51,19 @@ var youtubeFavorites = ( function ($, my) {
 
 				resultsHtml += '<div class="sideBySide" >';
 					resultsHtml += '<a>';
+
+kind = rawData.items[i].id.kind;
+kind = kind.substr( kind.indexOf( '#' ) + 1 );
+if ( kind === 'video' ) {
+	resultsHtml += '<span class="oi resultType" data-glyph="video" title="video" aria-hidden="true"></span> ';
+} else 
+if ( kind === 'playlist' ) {
+	resultsHtml += '<span class="oi resultType" data-glyph="list" title="playlist" aria-hidden="true"></span> ';
+} else
+if ( kind === 'channel' ) {
+	resultsHtml += '<span class="oi resultType" data-glyph="dial" title="channel" aria-hidden="true"></span> ';	
+}
+
 					resultsHtml += rawData.items[i].snippet.title + "</a><br>";
 					resultsHtml += '<small>' + rawData.items[i].snippet.description + '</small>';
 				resultsHtml += '</div>';
@@ -72,9 +88,13 @@ var youtubeFavorites = ( function ($, my) {
 
 		},
 
+
+		// Called by searchBox to handle successful search
 		setNewSearchResults = function( searchParams, rawSearchResults ) {
+			// add search params to obj so we have history of what the search was
 			rawData = $.extend( true, searchParams, rawSearchResults );
-			console.log( rawData );
+			
+			if ( my.debug_log > 1 ) { console.log( rawData ); }
 
 			unbindEvents();		// unbind previous listing handlers, if any
 
@@ -88,6 +108,7 @@ var youtubeFavorites = ( function ($, my) {
 
 		unbindEvents = function() {
 			$( '#resultsListings' ).off();
+			$( '.nextOrPrevLinks' ).off();
 		};
 
 		bindEvents = function() {
@@ -132,6 +153,34 @@ var youtubeFavorites = ( function ($, my) {
 				// CLose both the Search Results and the Favorites panel so the video is viewable
 				my.accordion.closePanel(1);
 				my.accordion.closePanel(2);	
+			});
+
+
+			// Handler for previous or next page of search results
+			$( '.nextOrPrevLinks' ).on( 'click', function(e) {
+				var params = { searchOrder: rawData.searchOrder, searchPhrase : rawData.searchPhrase };
+				// console.log( $(this).data( 'to' ) );
+
+				if ( $(this).data( 'to' ) === 'prev' ) {
+					params.pageToken = rawData.prevPageToken;
+				} else {
+					params.pageToken = rawData.nextPageToken;
+				}
+
+
+				// if it wasn't a location based search,
+				if ( ! rawData.hasOwnProperty( 'latitude' ) ) {
+					my.youtubeAPI.simpleNoLocationSearch( params, function( rawSearchResults ) {
+						my.statusAlert.statusReady();
+						setNewSearchResults( params, rawSearchResults );
+					});
+				}
+				else {
+					// TODO: location based search
+				}
+
+
+				console.log( rawData );
 			});
 		},
 

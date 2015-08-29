@@ -20,8 +20,7 @@ var youtubeFavorites = ( function ($, my) {
 			data.historyData = JSON.parse( localStorage.getItem( historyKey ) );	// Get history list
 
 			if ( my.debug_log > 1 && data.storedData ) {
-				console.log( 'stored data array length :' + data.storedData.length );
-				console.log( data.storedData );
+				console.log( 'Stored favorites :' + data.storedData.length );
 				console.log( 'historyData:' + data.historyData );
 			}
 

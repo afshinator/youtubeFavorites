@@ -74,17 +74,20 @@
 	}
 
 
+
+
 	#statusAlertBox {
 		position: fixed;
 		top: 7px;
 		right: 17px;
-		width: 150px;
-		height: 85px;
+		width: 175px;
+		height:115px;
 		opacity: .8;
 		background-color: red;
 		border-radius: 4px;
 		padding: 15px;
 		text-align: center;
+		font-size: 1.25em;
 	}
 
 	#statusText {
@@ -93,8 +96,16 @@
 
 	.statusImage {
 		padding-top: 5px;
-		font-size: 1.5em;
+
 	}
+
+
+	.resultType {
+		font-size: .80em;
+		opacity: .3;
+	}
+
+
 
 	.shadow1{
 	    -webkit-box-shadow: 0 10px 6px -6px #777;
@@ -338,6 +349,7 @@ hr.style-two {
     <!-- app code -->
     <script src="src/apiKeys.js"></script>
     <script src="src/accordion.js"></script>
+    <script src="src/statusAlert.js"></script>
     <script src="src/uiFramework.js"></script>
     <script src="src/storage.js"></script>
     <script src='src/geolocation.js'></script>
