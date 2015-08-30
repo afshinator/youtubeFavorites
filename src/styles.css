@@ -58,6 +58,13 @@
 		background-color: #935347;
 	}
 
+
+	/* Video Player */
+	.accordion-title:nth-child(7) {
+		background-color: #94b0da;
+	}
+
+
 	/* unvisited link */
 	#accordion a:link {
 	    color: #581B10;

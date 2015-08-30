@@ -149,7 +149,7 @@ if ( kind === 'channel' ) {
 				// CLose both the Search Results and the Favorites panel so the video is viewable
 				my.accordion.closePanel(1);
 				my.accordion.closePanel(2);	
-
+				my.accordion.openPanel(3);
 			});
 		};		
 

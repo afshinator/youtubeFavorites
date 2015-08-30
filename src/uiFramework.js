@@ -76,19 +76,42 @@ var youtubeFavorites = ( function ($, my) {
 				var targetText = $( e.target )[0].innerText,
 					panelIndex = null;  
 
-				if ( targetText === 'Search' ) { panelIndex = 0; }		// Index of 'Search'
+				// if ( targetText === 'Search' ) { panelIndex = 0; }		// Index of 'Search'
 
-				// Compensate for 'Search Results' because it has two words; assumes DOM element id is 'resultsTitle'
-				if ( targetText.split( ' ' ).length > 1 ) {
-					targetText = targetText.split( ' ' )[1];
-					panelIndex = 1;										// Index of 'Search Results'
+				// // Compensate for 'Search Results' because it has two words; assumes DOM element id is 'resultsTitle'
+				// if ( targetText.split( ' ' ).length > 1 ) {
+				// 	targetText = targetText.split( ' ' )[1];
+				// 	panelIndex = 1;										// Index of 'Search Results'
+				// }
+
+				// // Scroll to that accordion element
+				// $( '#' + targetText.toLowerCase() + 'Title' ).goTo();
+
+				// // Tell accordion to open appropriate panel
+				// if ( panelIndex === null ) { panelIndex = 2; }   		// Index of 'Favorites'
+
+
+				switch ( targetText ) {
+					case 'Search':
+						panelIndex = 0;
+						break;
+
+					case 'Favorites':
+						panelIndex = 2;
+						break;
+
+					case 'Video Player':
+						targetText = 'player';
+						panelIndex = 3;
+						break;
+
+					default: 							// Search Results
+						targetText = 'results';
+						panelIndex = 1;
 				}
 
 				// Scroll to that accordion element
-				$( '#' + targetText.toLowerCase() + 'Title' ).goTo();
-
-				// Tell accordion to open appropriate panel
-				if ( panelIndex === null ) { panelIndex = 2; }   		// Index of 'Favorites'
+				$( '#' + targetText.toLowerCase() + 'Title' ).goTo();				
 
 				my.accordion.openPanel( panelIndex );
 			});

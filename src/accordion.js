@@ -3,7 +3,7 @@ var youtubeFavorites = ( function ($, my) {
 	my.accordion = function() {
 		
 		// Constants
-		var numberOfPanes = 3;
+		var numberOfPanes = 4;
 
 		// Private vars
 		var panelStatus = [],

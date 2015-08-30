@@ -12,7 +12,7 @@ var youtubeFavorites = ( function ($, my) {
 			favoriteStar = '<span class="oi " data-glyph="star" title="favorite Video" aria-hidden="true"></span>',
 
 
-		// After the search is done, show some information about the search results at the top before the actual results
+		// Summary info at the top of search results panel, before the actual results
 		setResultsSummary = function() {
 			var searchPhrase = rawData.searchPhrase.length > 50 ? (rawData.searchPhrase.substring(0, 50) + '...') : rawData.searchPhrase,
 				resultsSummary = '',
@@ -46,6 +46,7 @@ var youtubeFavorites = ( function ($, my) {
 		},
 
 
+		// The actual search results
 		setResultsListings = function() {
 			var resultsHtml = '<ul id="resultsListings" class="videoList">',
 				kind = '';
@@ -163,13 +164,14 @@ var youtubeFavorites = ( function ($, my) {
 					return;
 				}
 
-				// They didnt click on description or star, so it must be the video link or title...
+				// They didnt click on description or star, so it must be the video link or title to view...
 
 				$( 'iframe' ).attr( 'src', "https://www.youtube.com/embed/" + videoId + "?rel=0" );
 
-				// CLose both the Search Results and the Favorites panel so the video is viewable
+				// CLose the Search Results and the Favorites panel, open video player panel
 				my.accordion.closePanel(1);
-				my.accordion.closePanel(2);	
+				my.accordion.closePanel(2);
+				my.accordion.openPanel(3);
 			});
 
 
