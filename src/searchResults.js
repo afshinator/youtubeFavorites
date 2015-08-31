@@ -165,8 +165,7 @@ var youtubeFavorites = ( function ($, my) {
 				}
 
 				// They didnt click on description or star, so it must be the video link or title to view...
-
-				$( 'iframe' ).attr( 'src', "https://www.youtube.com/embed/" + videoId + "?rel=0" );
+				my.vidPlayer.setVideo( videoId );
 
 				// CLose the Search Results and the Favorites panel, open video player panel
 				my.accordion.closePanel(1);

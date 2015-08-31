@@ -143,8 +143,7 @@ if ( kind === 'channel' ) {
 				}
 
 				// They didnt click on description or delete, so it must be the video link or title...
-
-				$( 'iframe' ).attr( 'src', "https://www.youtube.com/embed/" + videoId + "?rel=0" );
+				my.vidPlayer.setVideo( videoId );
 
 				// CLose both the Search Results and the Favorites panel so the video is viewable
 				my.accordion.closePanel(1);

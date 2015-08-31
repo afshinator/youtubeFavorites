@@ -3,6 +3,7 @@ var youtubeFavorites = ( function ($, my) {
 	my.youtubeAPI = function() {
 		
 		var searchEndPoint = 'https://www.googleapis.com/youtube/v3/search',
+			getRatingEndPoint = 'https://www.googleapis.com/youtube/v3/videos/getRating',
 			defaultApiParams = {
 				part: 'snippet',
 				maxResults : 25,
@@ -117,6 +118,28 @@ var youtubeFavorites = ( function ($, my) {
 			searchTerms.push( searchTerm );				// save the last search term
 
 			sendSearchRequest( apiParams, searchSuccessHandler );
+		},
+
+
+		getRatings = function( videoId, ratingsSuccessHandler ) {
+			var success = false,
+
+				request = $.ajax({
+				  url: getRatingEndPoint,
+				  method: "GET",
+				  data: { id : videoId}
+				});
+
+
+			request.done(function( data ) {
+				success = true;
+				// $.extend( rawSearchResults, data ); 		// deep object copy
+				ratingsSuccessHandler( data );	// Execute function that was passed in	
+			});
+			 
+			request.fail(function( jqXHR, textStatus, errThrown) {
+			  alert( "Ratings Request failed: " + textStatus + ',' + errThrown );
+			});				
 		};
 
 
@@ -124,7 +147,8 @@ var youtubeFavorites = ( function ($, my) {
 			init : init,
 			lastSearchTerm : lastSearchTerm,
 			simpleNoLocationSearch: simpleNoLocationSearch,
-			simpleLocationBasedSearch : simpleLocationBasedSearch
+			simpleLocationBasedSearch : simpleLocationBasedSearch,
+			getRatings : getRatings
 		};
 	}();
 

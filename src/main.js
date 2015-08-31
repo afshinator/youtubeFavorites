@@ -2,13 +2,14 @@ var youtubeFavorites = ( function ($, my) {
 
 	// Some globally accessible values
 	// 
-	my.debug_log = 1;					// Set to 0 for no output, 1 for yes, 2 for verbose
+	my.debug_log = 2;					// Set to 0 for no output, 1 for yes, 2 for verbose
 
 	my.constants = {
 		colorLight : '#ede9ce',			// main background yellowish white
 		colorMustard : '#c7ad88',		// search
 		colorDkGrey: '#64706c',			// search results
-		colorRust: '#935347'			// favorites
+		colorRust: '#935347',			// favorites
+		colorBlue: '#94b0da'			// video player
 	};
 
 	my.searchDisabled = false;			// set to true if api key not found
@@ -47,6 +48,8 @@ var youtubeFavorites = ( function ($, my) {
 		my.youtubeAPI.init();		// right now, this doesn't do jack!
 		
 		my.favorites.init();
+		my.vidPlayer.init();
+
 		my.statusAlert.statusReady();
 	}
 

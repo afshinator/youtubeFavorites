@@ -46,21 +46,7 @@ var youtubeFavorites = ( function ($, my) {
 			window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
 		},
 
-		initNavButtons = function() {
-			// $navMenuItem.on( 'mouseover', function(e) {
-			// 	var targetText= $( e.target )[0].innerText;
-
-			// 	if ( targetText  === 'Search' ) {
-			// 		$(this).css( 'border-bottom', '2px solid ' + my.constants.colorMustard );
-			// 	} 
-			// 	else if ( targetText === 'Search Results' ) {
-			// 		$(this).css( 'border-bottom', '2px solid ' + my.constants.colorDkGrey );
-			// 	}
-			// 	else if ( targetText === 'Favorites') {
-			// 		$(this).css( 'border-bottom', '2px solid ' + my.constants.colorRust );
-			// 	}
-			// });
-			
+		initNavButtons = function() {			
 			// Put a function on JQuery that will scroll to a given element
 			$.fn.goTo = function() {
 				$('html, body').animate({
@@ -72,24 +58,9 @@ var youtubeFavorites = ( function ($, my) {
 
 			// Scroll to DOM element based on which nav menu item was clicked,
 			// tell that accordion to open
-			$navMenuItem.on( 'click', function(e) {
+			$navMenuItem.add( '.footerNav' ).on( 'click', function(e) {
 				var targetText = $( e.target )[0].innerText,
-					panelIndex = null;  
-
-				// if ( targetText === 'Search' ) { panelIndex = 0; }		// Index of 'Search'
-
-				// // Compensate for 'Search Results' because it has two words; assumes DOM element id is 'resultsTitle'
-				// if ( targetText.split( ' ' ).length > 1 ) {
-				// 	targetText = targetText.split( ' ' )[1];
-				// 	panelIndex = 1;										// Index of 'Search Results'
-				// }
-
-				// // Scroll to that accordion element
-				// $( '#' + targetText.toLowerCase() + 'Title' ).goTo();
-
-				// // Tell accordion to open appropriate panel
-				// if ( panelIndex === null ) { panelIndex = 2; }   		// Index of 'Favorites'
-
+					panelIndex = null;
 
 				switch ( targetText ) {
 					case 'Search':

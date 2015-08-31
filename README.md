@@ -22,7 +22,7 @@ Features
 - option to filter out channels and playlists from results
 - link channels and playlists to youtube
 - show comments, ratings for selected video
-- put video player in accordion
+- hook up footer navigation buttons
 
 Tooling
 - Fork and work in some other libraries
